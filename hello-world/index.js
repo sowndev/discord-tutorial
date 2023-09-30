@@ -52,3 +52,21 @@ client.on(Events.MessageCreate, (message) => {
     message.channel.send("Bot Hello!");
   }
 });
+
+// register slash command on Bot join server
+// If bot join's server, you must be kick bot and invite again to see slash command while application while runing
+client.on(Events.ClientReady, async (c) => {
+  await c.application?.commands.create({
+    name: "ping",
+    description: "Replies with Pong!",
+  });
+});
+
+// event handle slash command
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isCommand()) return;
+
+  if (interaction.commandName === "ping") {
+    await interaction.reply("Pong!");
+  }
+});
