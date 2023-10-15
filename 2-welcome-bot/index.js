@@ -1,7 +1,7 @@
 const { Client, Events, IntentsBitField, Partials } = require("discord.js"); // import discord module
 require("dotenv").config(); // import dotenv module
 const token = process.env.TOKEN; // get token from environment variable
-
+const commonEvent = require("./src/common-event")
 // Create a new client instance
 
 const client = new Client({
@@ -32,41 +32,30 @@ const client = new Client({
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
-client.once(Events.ClientReady, (c) => {
-  console.log(`Bot Ready! Logged in as ${c.user.tag}`);
+client.once(Events.ClientReady, interaction => {
+  console.log(`Bot Ready! Logged in as ${interaction.user.tag}`);
 });
 
 // Log in to Discord with your client's token
 client.login(token);
 
-// event user send message
-client.on(Events.MessageCreate, (message) => {
-  console.log(
-    `received message: ${message.content} on channel ${message.channel.name}`
-  );
-  // check if bot's message
-  if (message.author.bot) return;
 
-  // user message
-  if (message.content === "hello") {
-    message.channel.send("Bot Hello!");
-  }
-});
+// handler common event 
+commonEvent(client)
 
 // register slash command on Bot join server
 // If bot join's server, you must be kick bot and invite again to see slash command while application while runing
-client.on(Events.ClientReady, async (c) => {
-  await c.application?.commands.create({
+client.on(Events.ClientReady, async interaction => {
+  await interaction.application?.commands.create({
     name: "ping",
     description: "Replies with Pong!",
   });
 });
-
 // event handle slash command
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on(Events.interactionCreate, async (interaction) => {
   if (!interaction.isCommand()) return;
 
   if (interaction.commandName === "ping") {
-    await interaction.reply("Pong!");
+    awaitinteraction.reply("Pong!");
   }
 });
