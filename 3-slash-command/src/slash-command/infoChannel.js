@@ -22,7 +22,7 @@ module.exports = {
             .setTitle(`Info channel ${interaction.channel}`)
             .setDescription("----------------------------")
             .addFields(
-                { name: 'Name', value: interaction.channel.name },
+                { name: 'Name', value: interaction.channel.name, inline: true },
                 { name: 'ID', value: interaction.channel.id },
                 { name: 'Member count', value: `${interaction.guild.memberCount}` },
                 { name: 'Messages count', value: `${messages.size}` },
@@ -31,6 +31,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.avatarURL() ?? interaction.user.defaultAvatarURL}` });
 
-        return interaction.channel.send({ embeds: [exampleEmbed] });
+        return interaction.reply({ embeds: [exampleEmbed] });
     }
 }
